@@ -27,8 +27,8 @@ const teamMembers = [
         name: 'Ayush Varshney',
         role: 'Cloud & DevOps',
         bio: 'Automating the cloud is my game. Specializing in CI/CD pipelines and building resilient, scalable cloud architectures.',
-        imageUrl: 'https://i.pravatar.cc/300?u=sneha',
-        socials: { linkedin: '#', github: '#', twitter: '#', instagram: '#' }
+        imageUrl: 'ayush_varshney_image.jpg',
+        socials: { linkedin: 'https://www.linkedin.com/in/ayush-varshney-33a492283?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app', github: 'https://github.com/Ayushvarshney1234', twitter: '#', instagram: 'https://www.instagram.com/ayushvarshney4545?igsh=MWYxaWI3NmY0M3Exeg==' }
     },
     {
         name: 'Love Varshney',
