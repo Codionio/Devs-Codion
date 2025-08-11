@@ -17,11 +17,11 @@ const teamMembers = [
         socials: { linkedin: '#', github: '#', twitter: '#', instagram: '#' }
     },
     {
-        name: 'Raunak Bisth',
-        role: 'Cybersecurity & Networks',
-        bio: 'Dedicated to fortifying digital infrastructures. Focused on ethical hacking and creating secure, resilient systems.',
-        imageUrl: 'https://i.pravatar.cc/300?u=rohan',
-        socials: { linkedin: '#', github: '#', twitter: '#', instagram: '#' }
+        name: 'Raunak Bisht',
+        role: 'Front-End Dev & Version Control',
+        bio: 'Crafting intuitive, user-friendly interfaces with precision, while ensuring seamless collaboration and robust version control for efficient development workflows.',
+        imageUrl: 'raunak_bisht_image.jpg',
+        socials: { linkedin: 'https://www.linkedin.com/in/raunak-bisht-b7929232a/', github: 'https://github.com/RaunakSinghBisht', twitter: '#', instagram: 'https://www.instagram.com/raunakbisht980/' }
     },
     {
         name: 'Ayush Varshney',
@@ -133,4 +133,5 @@ document.addEventListener('DOMContentLoaded', () => {
             card.addEventListener('mouseleave', () => gsap.to(card, { rotationX: 0, rotationY: 0, scale: 1, duration: 0.8, ease: "power2.out" }));
         });
     }
+
 });
