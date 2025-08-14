@@ -13,7 +13,7 @@ const teamMembers = [
         name: 'Meghanshu Saxena',
         role: 'Full-Stack Development',
         bio: 'B.Tech CSE Data Science student, I am Passionate about crafting seamless user experiences from front-end to back-end. Loves building scalable web applications.',
-        imageUrl: 'sellf.jpeg',
+        imageUrl: 'meghanshu_saxena_image.jpeg',
         socials: { linkedin: 'https://www.linkedin.com/in/meghanshu-saxena-390b77233/', github: 'https://github.com/Web-Master-Meghu', twitter: '#', instagram: 'https://www.instagram.com/_meghanshusaxena_?utm_source=qr&igsh=eTV6M3AyZmtmeXVw ' }
     },
     {
