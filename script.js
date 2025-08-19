@@ -6,28 +6,28 @@ const teamMembers = [
         name: 'Sahil Sharma',
         role: 'AI & Machine Learning',
         bio: 'A B.Tech CSE-AIML student specializing in deep learning and NLP, building intelligent systems that solve real-world problems.',
-        imageUrl: 'sahil_sharma_image.jpg',
+        imageUrl: 'media/ProfilePic/sahil_sharma_image.jpg',
         socials: { linkedin: 'https://www.linkedin.com/in/sahil-sharma-1a024b330?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app ', github: 'https://github.com/Sahil-coder-30', twitter: 'https://x.com/SahilSharma_30?t=6e0SJFuJZcF1tASjjwUgHg&s=09', instagram: 'https://www.instagram.com/sahil_sharma__30?igsh=MWVlNG9xYjZpY3hzYw==' }
     },
     {
         name: 'Meghanshu Saxena',
         role: 'Full-Stack Development',
         bio: 'B.Tech CSE Data Science student, I am Passionate about crafting seamless user experiences from front-end to back-end. Loves building scalable web applications.',
-        imageUrl: 'meghanshu_saxena_image.jpeg',
+        imageUrl: 'media/ProfilePic/meghanshu_saxena_image.jpeg',
         socials: { linkedin: 'https://www.linkedin.com/in/meghanshu-saxena-390b77233/', github: 'https://github.com/Web-Master-Meghu', twitter: '#', instagram: 'https://www.instagram.com/_meghanshusaxena_?utm_source=qr&igsh=eTV6M3AyZmtmeXVw ' }
     },
     {
         name: 'Raunak Bisht',
         role: 'Front-End Dev & Version Control',
         bio: 'Crafting intuitive, user-friendly interfaces with precision, while ensuring seamless collaboration and robust version control for efficient development workflows.',
-        imageUrl: 'raunak_bisht_image.jpg',
+        imageUrl: 'media/ProfilePic/raunak_bisht_image.jpg',
         socials: { linkedin: 'https://www.linkedin.com/in/raunak-bisht-b7929232a/', github: 'https://github.com/RaunakSinghBisht', twitter: '#', instagram: 'https://www.instagram.com/raunakbisht980/' }
     },
     {
         name: 'Ayush Varshney',
         role: 'Cloud & DevOps',
         bio: 'Automating the cloud is my game. Specializing in CI/CD pipelines and building resilient, scalable cloud architectures.',
-        imageUrl: 'ayush_varshney_image.jpg',
+        imageUrl: 'media/ProfilePic/ayush_varshney_image.jpg',
         socials: { linkedin: 'https://www.linkedin.com/in/ayush-varshney-33a492283?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app', github: 'https://github.com/Ayushvarshney1234', twitter: '#', instagram: 'https://www.instagram.com/ayushvarshney4545?igsh=MWYxaWI3NmY0M3Exeg==' }
     },
     {
@@ -135,3 +135,217 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+// Project Section
+// 1) Your data array
+const projects = [
+  {
+    title: 'B.Tech. Hub',
+    img: 'project_alpha.jpg',
+    desc: 'Real-time collaboration platform with low-latency messaging and scalable microservices architecture.',
+    tags: ['Vanilla JS', 'Python', 'Render'],
+    link: '#'
+  },
+  {
+    title: 'VisionX',
+    img: 'project_beta.jpg',
+    desc: 'Edge AI inference for smart cameras with on-device object tracking and analytics.',
+    tags: ['PyTorch', 'ONNX', 'Edge'],
+    link: '#'
+  },
+  {
+    title: 'NeuraNav',
+    img: 'project_gamma.jpg',
+    desc: 'Autonomous navigation stack with sensor fusion, SLAM, and route optimization for UGVs.',
+    tags: ['ROS2', 'C++', 'SLAM'],
+    link: '#'
+  }
+];
+
+// 2) Card template (alternates layout based on index)
+function projectCardTemplate(p, i) {
+  const rowDir = i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse';
+  const alignWrap = i % 2 === 0 ? 'md:justify-start' : 'md:justify-end';
+  const tagsHtml = (p.tags || [])
+    .map(t => `<span class="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs">${t}</span>`)
+    .join('');
+
+  return `
+    <div class="flex ${alignWrap}">
+      <article class="w-full md:w-[85%] lg:w-[80%] flex flex-col ${rowDir} items-stretch gap-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-white/5 backdrop-blur p-4 shadow-sm">
+        <img src="${p.img}" alt="${p.title} preview" class="w-full md:w-1/2 h-56 md:h-auto object-cover rounded-lg" loading="lazy">
+        <div class="flex-1">
+          <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">${p.title}</h3>
+          <p class="mt-2 text-gray-600 dark:text-gray-400">${p.desc}</p>
+          <div class="mt-3 flex flex-wrap gap-2">
+            ${tagsHtml}
+          </div>
+          <button class="view-more-btn mt-4 inline-block text-sm text-blue-600 dark:text-blue-400 hover:underline" data-project-index="${i}">
+            View more
+          </button>
+        </div>
+      </article>
+    </div>
+  `;
+}
+
+// 3) Render into the mount point
+(function renderProjects() {
+  const mount = document.getElementById('projects-list');
+  if (!mount) return;
+  mount.classList.add('space-y-8'); // ensure vertical gap between cards
+  mount.innerHTML = projects.map(projectCardTemplate).join('');
+})();
+
+// Enhance your projects array with optional long fields (if needed)
+const projectsDetails = projects.map(p => ({
+  ...p,
+  longDesc: p.longDesc || p.desc,
+  gallery: p.gallery || [p.img],
+  meta: p.meta || { role: 'Team Project', year: '2025' }
+}));
+
+function attachProjectModal() {
+  const modal = document.getElementById('project-modal');
+  const modalTitle = document.getElementById('modal-title');
+  const modalContent = document.getElementById('modal-content');
+  const closeBtn = document.getElementById('modal-close');
+  const dismissBtn = document.getElementById('modal-dismiss');
+
+  function openModal(idx) {
+    const data = projectsDetails[idx];
+    modalTitle.textContent = data.title;
+
+    const tagsHtml = (data.tags || [])
+      .map(t => `<span class="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs">${t}</span>`)
+      .join('');
+
+    const galleryHtml = (data.gallery || [])
+      .map(src => `<img src="${src}" alt="${data.title} image" class="w-full h-56 object-cover rounded-lg" loading="lazy">`)
+      .join('');
+
+    modalContent.innerHTML = `
+      <div class="grid gap-4 md:grid-cols-2">
+        <div class="space-y-3">
+          ${galleryHtml}
+        </div>
+        <div>
+          <p class="text-gray-700 dark:text-gray-300">${data.longDesc}</p>
+          <div class="mt-4 flex flex-wrap gap-2">${tagsHtml}</div>
+          <div class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+            <div>Role: ${data.meta.role || '-'}</div>
+            <div>Year: ${data.meta.year || '-'}</div>
+          </div>
+          ${data.link ? `<a href="${data.link}" class="mt-5 inline-block text-blue-600 dark:text-blue-400 hover:underline">Visit project</a>` : ''}
+        </div>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+    document.documentElement.classList.add('overflow-hidden');
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    document.documentElement.classList.remove('overflow-hidden');
+  }
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.view-more-btn');
+    if (btn) {
+      const idx = Number(btn.dataset.projectIndex);
+      if (!Number.isNaN(idx)) openModal(idx);
+    }
+  });
+
+  closeBtn?.addEventListener('click', closeModal);
+  dismissBtn?.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal || e.target.classList.contains('bg-black/60')) {
+      closeModal();
+    }
+  });
+
+  // Optional: close with Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+  });
+}
+
+attachProjectModal();
+
+
+// Pop Up Modal Data (Detailed Project Description)
+// Extend your existing projectsDetails or create a parallel data source
+const projectShowcases = [
+  {
+    video: {
+      src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4', // demo mp4
+      poster: 'https://picsum.photos/1200/675?random=10'
+    },
+    details: [
+      { img: 'https://picsum.photos/800/600?random=1', text: 'High-level system architecture and core modules overview.' },
+      { img: 'https://picsum.photos/800/600?random=2', text: 'Key feature: real-time collaboration and conflict resolution.' },
+      { img: 'https://picsum.photos/800/600?random=3', text: 'Performance benchmarks under varying load conditions.' },
+      { img: 'https://picsum.photos/800/600?random=4', text: 'Design decisions and UX flows for primary user journeys.' },
+      { img: 'https://picsum.photos/800/600?random=5', text: 'Deployment topology and CI/CD pipeline stages.' }
+    ]
+  },
+  {
+    video: {
+      src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+      poster: 'https://picsum.photos/1200/675?random=11'
+    },
+    details: [
+      { img: 'https://picsum.photos/800/600?random=6', text: 'Edge inference pipeline and model quantization strategy.' },
+      { img: 'https://picsum.photos/800/600?random=7', text: 'Device management and OTA update workflow.' },
+      { img: 'https://picsum.photos/800/600?random=8', text: 'On-device tracking accuracy comparison across scenes.' },
+      { img: 'https://picsum.photos/800/600?random=9', text: 'Privacy controls and on-the-fly redaction features.' },
+      { img: 'https://picsum.photos/800/600?random=12', text: 'Monitoring stack and alerting thresholds.' }
+    ]
+  },
+  {
+    video: {
+      src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+      poster: 'https://picsum.photos/1200/675?random=13'
+    },
+    details: [
+      { img: 'https://picsum.photos/800/600?random=14', text: 'Sensor fusion setup with LiDAR, camera, IMU.' },
+      { img: 'https://picsum.photos/800/600?random=15', text: 'Mapping and localization via SLAM variants tested.' },
+      { img: 'https://picsum.photos/800/600?random=16', text: 'Path planning approaches and cost maps.' },
+      { img: 'https://picsum.photos/800/600?random=17', text: 'Obstacle avoidance and recovery behaviors.' },
+      { img: 'https://picsum.photos/800/600?random=18', text: 'Field test results and iteration notes.' }
+    ]
+  }
+];
+
+
+function openModal(idx) {
+  const data = projectsDetails[idx];
+  modalTitle.textContent = data.title;
+
+  // Render the new showcase (video + alternating details)
+  renderProjectShowcase(idx);
+
+  // If you still want meta/tags, append them under details
+  const tagsHtml = (data.tags || [])
+    .map(t => `<span class="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs">${t}</span>`)
+    .join('');
+
+  // Append tags/meta under the details list
+  const detailsMount = document.getElementById('modal-details');
+  detailsMount.insertAdjacentHTML('beforeend', `
+    <div class="pt-2 border-t border-gray-200 dark:border-gray-800">
+      <div class="mt-4 flex flex-wrap gap-2">${tagsHtml}</div>
+      <div class="mt-3 text-sm text-gray-500 dark:text-gray-400">
+        <div>Role: ${data?.meta?.role || '-'}</div>
+        <div>Year: ${data?.meta?.year || '-'}</div>
+      </div>
+      ${data.link ? `<a href="${data.link}" class="mt-4 inline-block text-blue-600 dark:text-blue-400 hover:underline">Visit project</a>` : ''}
+    </div>
+  `);
+
+  // Show modal
+  modal.classList.remove('hidden');
+  document.documentElement.classList.add('overflow-hidden');
+}
