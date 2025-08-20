@@ -133,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
             card.addEventListener('mouseleave', () => gsap.to(card, { rotationX: 0, rotationY: 0, scale: 1, duration: 0.8, ease: "power2.out" }));
         });
     }
-
 });
 
 // Project Section
@@ -242,12 +241,10 @@ function attachProjectModal() {
     `;
 
     modal.classList.remove('hidden');
-    document.documentElement.classList.add('overflow-hidden');
   }
 
   function closeModal() {
     modal.classList.add('hidden');
-    document.documentElement.classList.remove('overflow-hidden');
   }
 
   document.addEventListener('click', (e) => {
@@ -270,82 +267,114 @@ function attachProjectModal() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
   });
+
+
+  // Pop Up Modal Data (Detailed Project Description)
+  // Extend your existing projectsDetails or create a parallel data source
+  const projectShowcases = [
+    {
+      video: {
+        src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4', // demo mp4
+        poster: 'https://picsum.photos/1200/675?random=10'
+      },
+      details: [
+        { img: 'https://picsum.photos/800/600?random=1', text: 'High-level system architecture and core modules overview.' },
+        { img: 'https://picsum.photos/800/600?random=2', text: 'Key feature: real-time collaboration and conflict resolution.' },
+        { img: 'https://picsum.photos/800/600?random=3', text: 'Performance benchmarks under varying load conditions.' },
+        { img: 'https://picsum.photos/800/600?random=4', text: 'Design decisions and UX flows for primary user journeys.' },
+        { img: 'https://picsum.photos/800/600?random=5', text: 'Deployment topology and CI/CD pipeline stages.' }
+      ]
+    },
+    {
+      video: {
+        src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+        poster: 'https://picsum.photos/1200/675?random=11'
+      },
+      details: [
+        { img: 'https://picsum.photos/800/600?random=6', text: 'Edge inference pipeline and model quantization strategy.' },
+        { img: 'https://picsum.photos/800/600?random=7', text: 'Device management and OTA update workflow.' },
+        { img: 'https://picsum.photos/800/600?random=8', text: 'On-device tracking accuracy comparison across scenes.' },
+        { img: 'https://picsum.photos/800/600?random=9', text: 'Privacy controls and on-the-fly redaction features.' },
+        { img: 'https://picsum.photos/800/600?random=12', text: 'Monitoring stack and alerting thresholds.' }
+      ]
+    },
+    {
+      video: {
+        src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+        poster: 'https://picsum.photos/1200/675?random=13'
+      },
+      details: [
+        { img: 'https://picsum.photos/800/600?random=14', text: 'Sensor fusion setup with LiDAR, camera, IMU.' },
+        { img: 'https://picsum.photos/800/600?random=15', text: 'Mapping and localization via SLAM variants tested.' },
+        { img: 'https://picsum.photos/800/600?random=16', text: 'Path planning approaches and cost maps.' },
+        { img: 'https://picsum.photos/800/600?random=17', text: 'Obstacle avoidance and recovery behaviors.' },
+        { img: 'https://picsum.photos/800/600?random=18', text: 'Field test results and iteration notes.' }
+      ]
+    }
+  ];
+
+  function renderProjectShowcase(idx) {
+    const videoMount = document.getElementById('modal-video');
+    const detailsMount = document.getElementById('modal-details');
+    if (!videoMount || !detailsMount) return;
+
+    const showcase = projectShowcases[idx] || projectShowcases[0];
+
+    // Video block
+    const posterAttr = showcase.video?.poster ? `poster="${showcase.video.poster}"` : '';
+    const srcAttr = showcase.video?.src ? showcase.video.src : '';
+    videoMount.innerHTML = `
+      <video class="w-full h-full object-cover rounded-b-none rounded-t-2xl md:rounded-t-2xl" controls ${posterAttr}>
+        <source src="${srcAttr}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    `;
+
+    // Details alternating blocks
+    const detailsHtml = (showcase.details || []).slice(0, 5).map((d, i) => {
+      const dir = i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse';
+      return `
+        <div class="flex flex-col ${dir} items-center gap-6">
+          <img src="${d.img}" alt="Project detail ${i+1}" class="w-full md:w-1/2 rounded-xl object-cover shadow" loading="lazy">
+          <p class="flex-1 text-gray-700 dark:text-gray-300 leading-relaxed">
+            ${d.text}
+          </p>
+        </div>
+      `;
+    }).join('');
+
+    detailsMount.innerHTML = detailsHtml;
+}
+
+  function openModal(idx) {
+    const data = projectsDetails[idx];
+    modalTitle.textContent = data.title;
+
+    // Render the new showcase (video + alternating details)
+    renderProjectShowcase(idx);
+
+    // If you still want meta/tags, append them under details
+    const tagsHtml = (data.tags || [])
+      .map(t => `<span class="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs">${t}</span>`)
+      .join('');
+
+    // Append tags/meta under the details list
+    const detailsMount = document.getElementById('modal-details');
+    detailsMount.insertAdjacentHTML('beforeend', `
+      <div class="pt-2 border-t border-gray-200 dark:border-gray-800">
+        <div class="mt-4 flex flex-wrap gap-2">${tagsHtml}</div>
+        <div class="mt-3 text-sm text-gray-500 dark:text-gray-400">
+          <div>Role: ${data?.meta?.role || '-'}</div>
+          <div>Year: ${data?.meta?.year || '-'}</div>
+        </div>
+        ${data.link ? `<a href="${data.link}" class="mt-4 inline-block text-blue-600 dark:text-blue-400 hover:underline">Visit project</a>` : ''}
+      </div>
+    `);
+
+    // Show modal
+    modal.classList.remove('hidden');
+  }
 }
 
 attachProjectModal();
 
-
-// Pop Up Modal Data (Detailed Project Description)
-// Extend your existing projectsDetails or create a parallel data source
-const projectShowcases = [
-  {
-    video: {
-      src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4', // demo mp4
-      poster: 'https://picsum.photos/1200/675?random=10'
-    },
-    details: [
-      { img: 'https://picsum.photos/800/600?random=1', text: 'High-level system architecture and core modules overview.' },
-      { img: 'https://picsum.photos/800/600?random=2', text: 'Key feature: real-time collaboration and conflict resolution.' },
-      { img: 'https://picsum.photos/800/600?random=3', text: 'Performance benchmarks under varying load conditions.' },
-      { img: 'https://picsum.photos/800/600?random=4', text: 'Design decisions and UX flows for primary user journeys.' },
-      { img: 'https://picsum.photos/800/600?random=5', text: 'Deployment topology and CI/CD pipeline stages.' }
-    ]
-  },
-  {
-    video: {
-      src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
-      poster: 'https://picsum.photos/1200/675?random=11'
-    },
-    details: [
-      { img: 'https://picsum.photos/800/600?random=6', text: 'Edge inference pipeline and model quantization strategy.' },
-      { img: 'https://picsum.photos/800/600?random=7', text: 'Device management and OTA update workflow.' },
-      { img: 'https://picsum.photos/800/600?random=8', text: 'On-device tracking accuracy comparison across scenes.' },
-      { img: 'https://picsum.photos/800/600?random=9', text: 'Privacy controls and on-the-fly redaction features.' },
-      { img: 'https://picsum.photos/800/600?random=12', text: 'Monitoring stack and alerting thresholds.' }
-    ]
-  },
-  {
-    video: {
-      src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
-      poster: 'https://picsum.photos/1200/675?random=13'
-    },
-    details: [
-      { img: 'https://picsum.photos/800/600?random=14', text: 'Sensor fusion setup with LiDAR, camera, IMU.' },
-      { img: 'https://picsum.photos/800/600?random=15', text: 'Mapping and localization via SLAM variants tested.' },
-      { img: 'https://picsum.photos/800/600?random=16', text: 'Path planning approaches and cost maps.' },
-      { img: 'https://picsum.photos/800/600?random=17', text: 'Obstacle avoidance and recovery behaviors.' },
-      { img: 'https://picsum.photos/800/600?random=18', text: 'Field test results and iteration notes.' }
-    ]
-  }
-];
-
-
-function openModal(idx) {
-  const data = projectsDetails[idx];
-  modalTitle.textContent = data.title;
-
-  // Render the new showcase (video + alternating details)
-  renderProjectShowcase(idx);
-
-  // If you still want meta/tags, append them under details
-  const tagsHtml = (data.tags || [])
-    .map(t => `<span class="px-2 py-1 rounded bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs">${t}</span>`)
-    .join('');
-
-  // Append tags/meta under the details list
-  const detailsMount = document.getElementById('modal-details');
-  detailsMount.insertAdjacentHTML('beforeend', `
-    <div class="pt-2 border-t border-gray-200 dark:border-gray-800">
-      <div class="mt-4 flex flex-wrap gap-2">${tagsHtml}</div>
-      <div class="mt-3 text-sm text-gray-500 dark:text-gray-400">
-        <div>Role: ${data?.meta?.role || '-'}</div>
-        <div>Year: ${data?.meta?.year || '-'}</div>
-      </div>
-      ${data.link ? `<a href="${data.link}" class="mt-4 inline-block text-blue-600 dark:text-blue-400 hover:underline">Visit project</a>` : ''}
-    </div>
-  `);
-
-  // Show modal
-  modal.classList.remove('hidden');
-  document.documentElement.classList.add('overflow-hidden');
-}
