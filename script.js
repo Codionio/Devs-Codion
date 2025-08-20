@@ -376,5 +376,53 @@ function attachProjectModal() {
   }
 }
 
-attachProjectModal();
+document.addEventListener('DOMContentLoaded', () => {
+if (!(window.gsap && window.ScrollTrigger)) return;
+gsap.registerPlugin(ScrollTrigger);
 
+// If you render projects via JS, ensure order:
+// renderProjects();
+initProjectsSlideIn();
+});
+
+function initProjectsSlideIn() {
+gsap.utils.toArray('#projects-list > div > article').forEach((card, i) => {
+const fromX = (i % 2 === 0) ? -40 : 40;
+gsap.from(card, {
+opacity: 0,
+x: fromX,
+duration: 0.7,
+ease: 'power3.out',
+scrollTrigger: {
+trigger: card,
+start: 'top 85%',
+toggleActions: 'play none none reverse'
+}
+});
+});
+
+
+gsap.utils.toArray('#projects-list article').forEach((card) => {
+  const chips = card.querySelectorAll('span');
+  if (!chips.length) return;
+  gsap.from(chips, {
+    opacity: 0,
+    y: 6,
+    duration: 0.8,
+    stagger: 0.05,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: card,
+      start: 'top 70%',
+      once: true
+    }
+  });
+});
+
+gsap.to('.blob1', { x: 30, y: -20, duration: 12, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+gsap.to('.blob2', { x: -25, y: 18, duration: 14, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+
+
+}
+
+attachProjectModal();
