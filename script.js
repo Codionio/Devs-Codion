@@ -34,7 +34,7 @@ const teamMembers = [
         name: 'Love Varshney',
         role: 'Mobile Development',
         bio: 'Bringing ideas to life on iOS and Android with Flutter. A B.Tech student with a keen eye for detail and performance.',
-        imageUrl: 'https://i.pravatar.cc/300?u=aditya',
+        imageUrl: 'media/ProfilePic/love_image.jpeg',
         socials: { linkedin: '#', github: '#', twitter: '#', instagram: '#' }
     }
 ];
