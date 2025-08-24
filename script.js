@@ -135,6 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
+
 // Project Section
 // 1) Your data array
 const projects = [
@@ -147,7 +149,7 @@ const projects = [
     link: 'https://b-tech-hub.onrender.com/'
   },
   {
-    title: 'VisionX',
+    title: 'AllotMe',
     img: 'project_beta.jpg',
     desc: 'Edge AI inference for smart cameras with on-device object tracking and analytics.',
     tags: ['PyTorch', 'ONNX', 'Edge'],
@@ -246,16 +248,30 @@ function attachProjectModal() {
   }
 
   function closeModal() {
-    modal.classList.add('hidden');
-  }
+  modal.classList.add('hidden');
+  document.documentElement.classList.remove('overflow-hidden'); // if you still have this
 
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.view-more-btn');
-    if (btn) {
-      const idx = Number(btn.dataset.projectIndex);
-      if (!Number.isNaN(idx)) openModal(idx);
+  // Remove blur from #projects-list
+  const projectsList = document.getElementById('projects-list');
+  if (projectsList) {
+    projectsList.classList.remove('blur-sm');
+  }
+}
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.view-more-btn');
+  if (btn) {
+    const idx = Number(btn.dataset.projectIndex);
+    if (!Number.isNaN(idx)) {
+      // Add blur to #projects-list
+      const projectsList = document.getElementById('projects-list');
+      if (projectsList) {
+        projectsList.classList.add('blur-sm'); // or 'blur-md' for stronger effect
+      }
+      openModal(idx);
     }
-  });
+  }
+});
 
   closeBtn?.addEventListener('click', closeModal);
   dismissBtn?.addEventListener('click', closeModal);
