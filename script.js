@@ -135,18 +135,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
+
 // Project Section
 // 1) Your data array
 const projects = [
   {
     title: 'B.Tech. Hub',
-    img: 'project_alpha.jpg',
+    img: 'media/project1/home.png',
+    img2: 'media/project1/home_dark.png',
     desc: 'Real-time collaboration platform with low-latency messaging and scalable microservices architecture.',
-    tags: ['Vanilla JS', 'Python', 'Render'],
-    link: '#'
+    tags: ['Flask', 'Render', 'Tailwind CSS','Python'],
+    link: 'https://b-tech-hub.onrender.com/'
   },
   {
-    title: 'VisionX',
+    title: 'AllotMe',
     img: 'project_beta.jpg',
     desc: 'Edge AI inference for smart cameras with on-device object tracking and analytics.',
     tags: ['PyTorch', 'ONNX', 'Edge'],
@@ -172,7 +175,8 @@ function projectCardTemplate(p, i) {
   return `
     <div class="flex ${alignWrap}">
       <article class="w-full md:w-[85%] lg:w-[80%] flex flex-col ${rowDir} items-stretch gap-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-white/5 backdrop-blur p-4 shadow-sm">
-        <img src="${p.img}" alt="${p.title} preview" class="w-full md:w-1/2 h-56 md:h-auto object-cover rounded-lg" loading="lazy">
+        <img src="${p.img}" alt="${p.title} preview" class="dark:hidden w-full md:w-1/2 h-56 md:h-auto object-cover rounded-lg" loading="lazy">
+        <img src="${p.img2}" alt="${p.title} preview" class="dark:block hidden w-full md:w-1/2 h-56 md:h-auto object-cover rounded-lg" loading="lazy">
         <div class="flex-1">
           <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">${p.title}</h3>
           <p class="mt-2 text-gray-600 dark:text-gray-400">${p.desc}</p>
@@ -244,16 +248,30 @@ function attachProjectModal() {
   }
 
   function closeModal() {
-    modal.classList.add('hidden');
-  }
+  modal.classList.add('hidden');
+  document.documentElement.classList.remove('overflow-hidden'); // if you still have this
 
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.view-more-btn');
-    if (btn) {
-      const idx = Number(btn.dataset.projectIndex);
-      if (!Number.isNaN(idx)) openModal(idx);
+  // Remove blur from #projects-list
+  const projectsList = document.getElementById('projects-list');
+  if (projectsList) {
+    projectsList.classList.remove('blur-sm');
+  }
+}
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.view-more-btn');
+  if (btn) {
+    const idx = Number(btn.dataset.projectIndex);
+    if (!Number.isNaN(idx)) {
+      // Add blur to #projects-list
+      const projectsList = document.getElementById('projects-list');
+      if (projectsList) {
+        projectsList.classList.add('blur-sm'); // or 'blur-md' for stronger effect
+      }
+      openModal(idx);
     }
-  });
+  }
+});
 
   closeBtn?.addEventListener('click', closeModal);
   dismissBtn?.addEventListener('click', closeModal);
@@ -278,11 +296,12 @@ function attachProjectModal() {
         poster: 'https://picsum.photos/1200/675?random=10'
       },
       details: [
-        { img: 'https://picsum.photos/800/600?random=1', text: 'High-level system architecture and core modules overview.' },
-        { img: 'https://picsum.photos/800/600?random=2', text: 'Key feature: real-time collaboration and conflict resolution.' },
-        { img: 'https://picsum.photos/800/600?random=3', text: 'Performance benchmarks under varying load conditions.' },
-        { img: 'https://picsum.photos/800/600?random=4', text: 'Design decisions and UX flows for primary user journeys.' },
-        { img: 'https://picsum.photos/800/600?random=5', text: 'Deployment topology and CI/CD pipeline stages.' }
+        { img: 'media/project1/SGPA.png', text: 'Find out your Semester Grade Point Average (SGPA) with ease. Enter marks subject-wise, and instantly get a performance dashboard with detailed graphical analysis to track your academic growth and strengths.' },
+        { img: 'media/project1/PerformanceDashboard.png', text: 'Track your academic journey with an interactive performance dashboard that transforms your results into clear graphical insights. Instantly view subject-wise strengths, weaknesses, and overall progress through charts and visual analysis, making it easier to understand and improve your performance.' },
+        { img: 'media/project1/Resources.png', text: 'Access a well-organized library of Previous Year Question Papers (PYQs), notes, solved lectures, and subject-wise lecture links for all years. Everything you need to study smarter, all in one place.' },
+        { img: 'media/project1/Syllabus.png', text: 'Browse the complete and up-to-date syllabus of all AKTU branches at your fingertips. No need to search elsewhere – everything is neatly categorized for quick reference.' },
+        { img: 'media/project1/CGPA.png', text: 'Easily calculate your Cumulative Grade Point Average (CGPA) for the entire year. Just enter your subject grades and get an accurate overall performance score in seconds.' },
+        { img: 'media/project1/Uni_Info.png', text: 'Stay informed with the latest updates, notices, and announcements from AKTU University. Get all important university information in a clear and accessible format.' }
       ]
     },
     {
