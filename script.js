@@ -135,31 +135,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+function getPlayableLink(sharingLink) {
+  // Regular expression to extract the file ID from various Google Drive link formats
+  const regex = /drive\.google\.com\/(?:file\/d\/|open\?id=)([a-zA-Z0-9_-]+)/;
+  const match = sharingLink.match(regex);
 
+  if (match && match[1]) {
+      const fileId = match[1];
+      // Construct the embeddable preview URL
+      return `https://drive.google.com/file/d/${fileId}/preview?autoplay=1`;
+  } else {
+      // Return null if the link is not a valid Google Drive file link
+      console.error("Invalid Google Drive link provided.");
+      return null;
+  }
+}
 
 // Project Section
 // 1) Your data array
 const projects = [
   {
     title: 'B.Tech. Hub',
-    img: 'media/project1/home.png',
-    img2: 'media/project1/home_dark.png',
+    // The 'img' and 'img2' properties are replaced by 'iframeSrc'
+    iframeSrc: "https://www.youtube.com/embed/J4fpPRlL3mE?autoplay=1&mute=1",
     desc: 'Real-time collaboration platform with low-latency messaging and scalable microservices architecture.',
-    tags: ['Flask', 'Render', 'Tailwind CSS','Python'],
+    tags: ['Flask', 'Render', 'Tailwind CSS', 'Python'],
     link: 'https://b-tech-hub.onrender.com/'
   },
   {
     title: 'AllotMe',
-    img: 'project_beta.jpg',
+    iframeSrc: 'https://www.youtube.com/embed/your_video_id_here', // Add your embed link
     desc: 'Edge AI inference for smart cameras with on-device object tracking and analytics.',
     tags: ['PyTorch', 'ONNX', 'Edge'],
-    link: '#'
-  },
-  {
-    title: 'NeuraNav',
-    img: 'project_gamma.jpg',
-    desc: 'Autonomous navigation stack with sensor fusion, SLAM, and route optimization for UGVs.',
-    tags: ['ROS2', 'C++', 'SLAM'],
     link: '#'
   }
 ];
@@ -175,8 +182,17 @@ function projectCardTemplate(p, i) {
   return `
     <div class="flex ${alignWrap}">
       <article class="w-full md:w-[85%] lg:w-[80%] flex flex-col ${rowDir} items-stretch gap-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white/70 dark:bg-white/5 backdrop-blur p-4 shadow-sm">
-        <img src="${p.img}" alt="${p.title} preview" class="dark:hidden w-full md:w-1/2 h-56 md:h-auto object-cover rounded-lg" loading="lazy">
-        <img src="${p.img2}" alt="${p.title} preview" class="dark:block hidden w-full md:w-1/2 h-56 md:h-auto object-cover rounded-lg" loading="lazy">
+        
+        <div class="w-full md:w-1/2 h-56 md:h-auto rounded-lg overflow-hidden bg-black">
+          <iframe width="560" height="315" 
+            src="${p.iframeSrc}"
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
+          </iframe>
+        </div>
         <div class="flex-1">
           <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">${p.title}</h3>
           <p class="mt-2 text-gray-600 dark:text-gray-400">${p.desc}</p>
@@ -291,10 +307,7 @@ document.addEventListener('click', (e) => {
   // Extend your existing projectsDetails or create a parallel data source
   const projectShowcases = [
     {
-      video: {
-        src: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4', // demo mp4
-        poster: 'https://picsum.photos/1200/675?random=10'
-      },
+      iframeSrc: 'https://www.youtube.com/embed/J4fpPRlL3mE?autoplay=1',
       details: [
         { img: 'media/project1/SGPA.png', text: 'Find out your Semester Grade Point Average (SGPA) with ease. Enter marks subject-wise, and instantly get a performance dashboard with detailed graphical analysis to track your academic growth and strengths.' },
         { img: 'media/project1/PerformanceDashboard.png', text: 'Track your academic journey with an interactive performance dashboard that transforms your results into clear graphical insights. Instantly view subject-wise strengths, weaknesses, and overall progress through charts and visual analysis, making it easier to understand and improve your performance.' },
@@ -340,13 +353,15 @@ document.addEventListener('click', (e) => {
     const showcase = projectShowcases[idx] || projectShowcases[0];
 
     // Video block
-    const posterAttr = showcase.video?.poster ? `poster="${showcase.video.poster}"` : '';
-    const srcAttr = showcase.video?.src ? showcase.video.src : '';
     videoMount.innerHTML = `
-      <video class="w-full h-full object-cover rounded-b-none rounded-t-2xl md:rounded-t-2xl" controls ${posterAttr}>
-        <source src="${srcAttr}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+      <iframe width=100% height=100% 
+        src="${showcase.iframeSrc}"
+        title="YouTube video player" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        referrerpolicy="strict-origin-when-cross-origin" 
+        allowfullscreen>
+      </iframe>
     `;
 
     // Details alternating blocks
